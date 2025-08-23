@@ -23,7 +23,7 @@ app.use("/api/v1/auth", authRoutes);
 
 // problem routes
 import problemRoutes from "./routes/problem.routes.js";
-app.use("api/v1/problems", problemRoutes);
+app.use("/api/v1/problems", problemRoutes);
 
 const PORT = process.env.PORT ?? 3000;
 
