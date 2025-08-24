@@ -25,6 +25,10 @@ app.use("/api/v1/auth", authRoutes);
 import problemRoutes from "./routes/problem.routes.js";
 app.use("/api/v1/problems", problemRoutes);
 
+// execute code routes
+import executeCodeRouter from "./routes/executeCode.routes.js";
+app.use("/api/v1/execute-code", executeCodeRouter);
+
 const PORT = process.env.PORT ?? 3000;
 
 app.listen(PORT, () => {
