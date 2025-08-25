@@ -29,6 +29,10 @@ app.use("/api/v1/problems", problemRoutes);
 import executeCodeRouter from "./routes/executeCode.routes.js";
 app.use("/api/v1/execute-code", executeCodeRouter);
 
+// submission routes
+import submissionRouter from "../src/routes/submission.routes.js";
+app.use("/api/v1/submissions", submissionRouter);
+
 const PORT = process.env.PORT ?? 3000;
 
 app.listen(PORT, () => {

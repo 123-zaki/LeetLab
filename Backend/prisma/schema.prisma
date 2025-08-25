@@ -75,6 +75,7 @@ model Submission {
   stdin      String?
   stdout     String?
   stderr     String?
+  compileOutput String?
   status     String // Accepted or wrong answer
   memory     String?
   time       String?
@@ -95,7 +96,7 @@ model TestcaseResult {
   stdout String?
   expected String
   stderr String?
-  compiledOutput String?
+  compileOutput String?
   status String
   memory String?
   time String?
