@@ -33,6 +33,10 @@ app.use("/api/v1/execute-code", executeCodeRouter);
 import submissionRouter from "../src/routes/submission.routes.js";
 app.use("/api/v1/submissions", submissionRouter);
 
+// playlist routes
+import playlistRouter from "../src/routes/playlist.routes.js";
+app.use("/api/v1/playlists", playlistRouter);
+
 const PORT = process.env.PORT ?? 3000;
 
 app.listen(PORT, () => {

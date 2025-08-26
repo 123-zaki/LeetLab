@@ -25,7 +25,7 @@ export const getSubmissionForProblem = async (req, res) => {
         const submissions = await db.submission.findMany({
             where: {
                 problemId,
-                userId
+                userId: req.user.id
             }
         });
 

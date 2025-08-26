@@ -120,7 +120,7 @@ export const getProblemById = async (req, res) => {
     });
 
     if (!problem) {
-      return res.status(404), json({ error: "Problem not found" });
+      return res.status(404).json({ error: "Problem not found" });
     }
 
     res.status(200).json({
@@ -240,4 +240,32 @@ export const deleteProblem = async (req, res) => {
   }
 };
 
-export const getAllProblemsSolvedByUser = async (req, res) => { };
+export const getAllProblemsSolvedByUser = async (req, res) => {
+  try {
+    const problems = await db.problem.findMany({
+      where: {
+        solvedBy: {
+          some: {
+            userId: req.user.id
+          }
+        }
+      },
+      include: {
+        solvedBy: {
+          where: {
+            userId: req.user.id
+          }
+        }
+      }
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Problems fetched successfully",
+      problems
+    });
+  } catch (error) {
+    console.error("Error fetching solved problems for current user: ", error);
+    return res.status(500).json({error: error.message || "Error while fetching solved problems for currently logged in user"});
+  }
+};

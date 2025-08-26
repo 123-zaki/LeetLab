@@ -34,9 +34,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  problems   Problem[]
-  submission Submission[]
+  problems      Problem[]
+  submission    Submission[]
   problemSolved ProblemSolved[]
+  playlists     Playlist[]
 }
 
 model Problem {
@@ -59,47 +60,47 @@ model Problem {
   updatedAt DateTime @updatedAt
 
   // Relationships
-  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-
-  submission Submission[]
-  solvedBy ProblemSolved[]
+  submission         Submission[]
+  solvedBy           ProblemSolved[]
+  ProblemsPlaylist ProblemsInPlaylist[]
 }
 
 model Submission {
-  id         String   @id @default(uuid())
-  userId     String
-  problemId  String
-  sourceCode Json
-  language   String
-  stdin      String?
-  stdout     String?
-  stderr     String?
+  id            String   @id @default(uuid())
+  userId        String
+  problemId     String
+  sourceCode    Json
+  language      String
+  stdin         String?
+  stdout        String?
+  stderr        String?
   compileOutput String?
-  status     String // Accepted or wrong answer
-  memory     String?
-  time       String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  status        String // Accepted or wrong answer
+  memory        String?
+  time          String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   // Relationships
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem   Problem          @relation(fields: [problemId], references: [id], onDelete: Cascade)
   testcases TestcaseResult[]
 }
 
 model TestcaseResult {
-  id String @id @default(uuid())
-  submissionId String
-  testcase Int
-  passed Boolean
-  stdout String?
-  expected String
-  stderr String?
+  id            String  @id @default(uuid())
+  submissionId  String
+  testcase      Int
+  passed        Boolean
+  stdout        String?
+  expected      String
+  stderr        String?
   compileOutput String?
-  status String
-  memory String?
-  time String?
+  status        String
+  memory        String?
+  time          String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -111,15 +112,44 @@ model TestcaseResult {
 }
 
 model ProblemSolved {
-  id String @id @default(uuid())
+  id        String   @id @default(uuid())
   problemId String
-  userId String
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // relationships
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   problem Problem @relation(fields: [problemId], references: [id], onDelete: Cascade)
 
   @@unique([userId, problemId])
+}
+
+model Playlist {
+  id          String               @id @default(uuid())
+  name        String
+  description String?
+  userId      String
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  problems    ProblemsInPlaylist[]
+
+  // relationship
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([name, userId]) // unique playlist name per user
+}
+
+model ProblemsInPlaylist {
+  id         String   @id @default(uuid())
+  playlistId String
+  problemId  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // relationship
+  playlist Playlist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  problem  Problem  @relation(fields: [problemId], references: [id], onDelete: Cascade)
+
+  @@unique([problemId, playlistId])
 }
