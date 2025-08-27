@@ -1,6 +1,7 @@
 import express, { urlencoded } from "express";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
 
@@ -12,6 +13,11 @@ app.use(express.json());
 app.use(urlencoded({extended: true}));
 
 app.use(cookieParser());
+
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true
+}));
 
 app.get("/", (req, res) => {
     res.send("Hello Guys, Welcome to leetlab 🔥");
